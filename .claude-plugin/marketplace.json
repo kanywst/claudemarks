@@ -1,0 +1,14 @@
+{
+  "name": "claudemarks",
+  "owner": {
+    "name": "kanywst"
+  },
+  "plugins": [
+    {
+      "name": "claudemarks",
+      "source": "./",
+      "description": "Bookmarks for your Claude Code sessions. Auto-logs resume IDs, topics, and working dirs on session exit.",
+      "version": "0.1.0"
+    }
+  ]
+}
