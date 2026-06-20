@@ -7,6 +7,10 @@
 # Contract: never blocks a session exit. Fails open (exit 0) on any error.
 set -uo pipefail
 
+# jq is the only external dependency. If it is missing, fail open silently
+# rather than spraying "command not found" to stderr on every session exit.
+command -v jq >/dev/null 2>&1 || exit 0
+
 payload="$(cat)" || exit 0
 
 sid="$(printf '%s' "$payload" | jq -r '.session_id // empty' 2>/dev/null)" || exit 0
