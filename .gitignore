@@ -1,0 +1,5 @@
+# Auto-logged session history (contains topics + local paths)
+SESSIONS.md
+
+# Personal, machine-local Claude Code settings
+.claude/settings.local.json
