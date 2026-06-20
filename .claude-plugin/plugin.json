@@ -1,0 +1,19 @@
+{
+  "name": "claudemarks",
+  "version": "0.1.0",
+  "description": "Bookmarks for your Claude Code sessions. Auto-logs resume IDs, topics, and working dirs on session exit.",
+  "author": {
+    "name": "kanywst"
+  },
+  "homepage": "https://github.com/kanywst/claudemarks",
+  "repository": "https://github.com/kanywst/claudemarks",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "hooks",
+    "session",
+    "resume",
+    "sessionend",
+    "bookmarks"
+  ]
+}
