@@ -25,10 +25,12 @@ ts="$(date '+%Y-%m-%d %H:%M:%S')"
 # first plain-text user prompt; else "(untitled)".
 topic=""
 if [ -n "$tpath" ] && [ -f "$tpath" ]; then
-  topic="$(jq -r 'select(.type=="ai-title") | .aiTitle' "$tpath" 2>/dev/null | tail -1)"
+  # `.type?` tolerates non-object transcript lines instead of aborting jq.
+  topic="$(jq -r 'select(.type? == "ai-title") | .aiTitle' "$tpath" 2>/dev/null | tail -n 1)"
   if [ -z "$topic" ]; then
-    # jq string slice is codepoint-based, so it won't split a multibyte char.
-    topic="$(jq -r 'select(.type=="user" and (.message.content|type=="string")) | .message.content[0:80]' "$tpath" 2>/dev/null | grep -vE '^<' | head -1)"
+    # Optional chaining keeps jq from aborting on unexpected shapes; the string
+    # slice is codepoint-based, so it won't split a multibyte char.
+    topic="$(jq -r 'select(.type? == "user") | .message?.content? | select(type == "string") | .[0:80]' "$tpath" 2>/dev/null | grep -vE '^<' | head -n 1)"
   fi
 fi
 [ -z "$topic" ] && topic="(untitled)"
