@@ -2,6 +2,10 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
+[![CI](https://github.com/kanywst/claudemarks/actions/workflows/ci.yml/badge.svg)](https://github.com/kanywst/claudemarks/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/kanywst/claudemarks)](https://github.com/kanywst/claudemarks/releases)
+[![License: MIT](https://img.shields.io/github/license/kanywst/claudemarks)](LICENSE)
+
 Bookmarks for your Claude Code sessions. Auto-logs resume IDs, topics, and working dirs on session exit — one row per session, in plain markdown, zero dependencies.
 
 When you exit `claude`, it prints an ID you can use to resume with `claude --resume <id>`.

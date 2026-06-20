@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  shellcheck:
+    name: shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run shellcheck
+        # shellcheck is preinstalled on ubuntu runners. SC2016 (info) is
+        # excluded: the backticks in printf formats are intentional markdown.
+        run: shellcheck --severity=warning hooks/*.sh

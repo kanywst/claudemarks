@@ -2,6 +2,10 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
+[![CI](https://github.com/kanywst/claudemarks/actions/workflows/ci.yml/badge.svg)](https://github.com/kanywst/claudemarks/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/kanywst/claudemarks)](https://github.com/kanywst/claudemarks/releases)
+[![License: MIT](https://img.shields.io/github/license/kanywst/claudemarks)](LICENSE)
+
 Claude Code セッションのブックマーク。終了時に resume ID・タイトル・作業ディレクトリを自動記録する。1セッション1行、プレーンな markdown、依存ゼロ。
 
 `claude` を抜けると `claude --resume <id>` で再開できる ID が表示される。
