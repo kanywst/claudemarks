@@ -19,14 +19,14 @@ Other tools wrap session resume with TUIs, semantic search, or daemons. claudema
 
 `SESSIONS.md` keeps one row per session.
 
-| Column | Meaning |
-| --- | --- |
-| ended | Exit timestamp |
-| topic | Claude Code auto-generated title (falls back to the first prompt, then `(untitled)`) |
-| cwd | Working directory the session launched from |
-| session id | ID for resuming |
-| reason | Exit reason (`clear` / `logout` / `prompt_input_exit` / `other`) |
-| resume | Copy-paste ready `claude --resume <id>` |
+|   Column   |                                       Meaning                                        |
+| :--------: | :----------------------------------------------------------------------------------: |
+|   ended    |                                    Exit timestamp                                    |
+|   topic    | Claude Code auto-generated title (falls back to the first prompt, then `(untitled)`) |
+|    cwd     |                     Working directory the session launched from                      |
+| session id |                                   ID for resuming                                    |
+|   reason   |           Exit reason (`clear` / `logout` / `prompt_input_exit` / `other`)           |
+|   resume   |                       Copy-paste ready `claude --resume <id>`                        |
 
 ## Setup
 
@@ -74,11 +74,3 @@ This registers a `SessionEnd` hook globally. From then on, every session writes 
 - It reads the auto title from the transcript and appends a row to `SESSIONS.md`
 - It is fail-open: any error exits `0` so it never blocks a session from closing
 - `SESSIONS.md` is gitignored in this repo (work topics + local paths)
-
-## Files
-
-- `.claude-plugin/plugin.json` — plugin manifest
-- `.claude-plugin/marketplace.json` — marketplace catalog for `/plugin install`
-- `hooks/hooks.json` — registers the `SessionEnd` hook for the plugin
-- `hooks/log-session.sh` — the append script (fail-open, never blocks exit)
-- `SESSIONS.md` — auto-generated log (gitignored)
