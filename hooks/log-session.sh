@@ -11,14 +11,19 @@ set -uo pipefail
 # rather than spraying "command not found" to stderr on every session exit.
 command -v jq >/dev/null 2>&1 || exit 0
 
+# Nothing is piped in on a manual interactive run; bail instead of hanging on cat.
+[ -t 0 ] && exit 0
+
 payload="$(cat)" || exit 0
 
-sid="$(printf '%s' "$payload" | jq -r '.session_id // empty' 2>/dev/null)" || exit 0
+# Parse all payload fields in a single jq pass (one process, not four). @tsv
+# keeps fields on one tab-separated line; none of these values contain tabs.
+IFS=$'\t' read -r sid reason cwd tpath < <(
+  printf '%s' "$payload" |
+    jq -r '[.session_id // "", .reason // "other", .cwd // "", .transcript_path // ""] | @tsv' 2>/dev/null
+)
 [ -z "$sid" ] && exit 0
 
-reason="$(printf '%s' "$payload" | jq -r '.reason // "other"' 2>/dev/null)"
-cwd="$(printf '%s' "$payload" | jq -r '.cwd // empty' 2>/dev/null)"
-tpath="$(printf '%s' "$payload" | jq -r '.transcript_path // empty' 2>/dev/null)"
 ts="$(date '+%Y-%m-%d %H:%M:%S')"
 
 # Topic: prefer Claude Code's auto-generated session title; fall back to the
@@ -47,9 +52,9 @@ if [ ! -f "$log" ]; then
     printf 'Auto-logged by [claudemarks](https://github.com/kanywst/claudemarks) on SessionEnd. Resume with `claude --resume <id>`.\n\n'
     printf '| ended | topic | cwd | session id | reason | resume |\n'
     printf '| --- | --- | --- | --- | --- | --- |\n'
-  } >> "$log"
+  } >> "$log" 2>/dev/null
 fi
 
 cwd_cell="$(printf '%s' "${cwd:-$(pwd)}" | sed 's/|/\\|/g')"
-printf '| %s | %s | `%s` | `%s` | %s | `claude --resume %s` |\n' "$ts" "$topic" "$cwd_cell" "$sid" "$reason" "$sid" >> "$log"
+printf '| %s | %s | `%s` | `%s` | %s | `claude --resume %s` |\n' "$ts" "$topic" "$cwd_cell" "$sid" "$reason" "$sid" >> "$log" 2>/dev/null
 exit 0
